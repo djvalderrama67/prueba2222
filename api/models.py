@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Sum
 
 # Create your models here.
 
@@ -17,8 +18,10 @@ class Categoria (models.Model):
 class Vehiculo (models.Model):
     idVehiculo = models.AutoField(primary_key=True, verbose_name='ID')
     name = models.CharField(max_length=100, verbose_name='Nombre del vehiculo')
-    capacidad = models.IntegerField(verbose_name='Capacidad del vehiculo')
-    volumen_carga = models.FloatField(verbose_name='Volumen de carga (m³)')
+    capacidad_min = models.IntegerField(verbose_name='Capacidad minima del vehiculo',default=1)
+    capacidad_max = models.IntegerField(verbose_name='Capacidad maxima del vehiculo',default=60)
+    volumen_carga_min = models.IntegerField(verbose_name='Volumen minimo de carga (m³)', default=2)
+    volumen_carga_max = models.IntegerField(verbose_name='Volumen maximo de carga (m³)', default=120)
 
     def __str__(self):
         return self.name
@@ -30,7 +33,6 @@ class Vehiculo (models.Model):
 class Bodega (models.Model):
     idBodega = models.AutoField(primary_key=True, verbose_name='ID')
     name = models.CharField(max_length=50, verbose_name='Nombre de la bodega')
-    capacidad = models.IntegerField(verbose_name='Capacidad de la bodega')
     area = models.FloatField(verbose_name='Area (m²)')
     volumen = models.FloatField(verbose_name='Volumen (m³)')
     altura = models.FloatField(verbose_name='Altura (m)')
@@ -64,20 +66,33 @@ class Objeto (models.Model):
         verbose_name = 'Objeto'
         verbose_name_plural = 'Objetos'
 
-class Calculo (models.Model):
+class Calculo(models.Model):
     idCalculo = models.AutoField(primary_key=True, verbose_name='ID')
-    objetos = models.ManyToManyField(Objeto)
+    objetos = models.ManyToManyField(Objeto, verbose_name='Objetos seleccionados')
     volumen_Total = models.FloatField(verbose_name='Volumen Total (m³)')
     idVehiculo = models.ForeignKey(Vehiculo, on_delete=models.CASCADE)
     idBodega = models.ForeignKey(Bodega, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
-        self.volumen_Total = sum(objeto.volumen for objeto in self.objetos.all())
+        volumen_total = self.objetos.aggregate(Sum('volumen'))['volumen__sum'] or 0.0
+        self.volumen_Total = volumen_total
         super(Calculo, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.idCalculo
+        return f'Calculo {self.idCalculo}: {", ".join([str(objeto) for objeto in self.objetos.all()])}'
 
     class Meta:
         verbose_name = 'Calculo'
         verbose_name_plural = 'Calculos'
+
+
+
+
+
+
+
+
+
+
+
+
