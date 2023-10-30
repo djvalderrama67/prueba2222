@@ -5,10 +5,10 @@ from django.db.models import Sum
 
 class Categoria (models.Model):
     idCategoria = models.AutoField(primary_key=True, verbose_name='ID')
-    name = models.CharField(max_length=50, verbose_name='Nombre de la categoria')
+    nombre = models.CharField(max_length=50, verbose_name='Nombre de la categoria')
 
     def __str__(self):
-        return self.name
+        return self.nombre
 
     class Meta:
         verbose_name = 'Categoria'
@@ -17,14 +17,14 @@ class Categoria (models.Model):
 
 class Vehiculo (models.Model):
     idVehiculo = models.AutoField(primary_key=True, verbose_name='ID')
-    name = models.CharField(max_length=100, verbose_name='Nombre del vehiculo')
+    nombre = models.CharField(max_length=100, verbose_name='Nombre del vehiculo')
     capacidad_min = models.IntegerField(verbose_name='Capacidad minima del vehiculo',default=1)
     capacidad_max = models.IntegerField(verbose_name='Capacidad maxima del vehiculo',default=60)
     volumen_carga_min = models.IntegerField(verbose_name='Volumen minimo de carga (m³)', default=2)
     volumen_carga_max = models.IntegerField(verbose_name='Volumen maximo de carga (m³)', default=120)
 
     def __str__(self):
-        return self.name
+        return self.nombre
 
     class Meta:
         verbose_name = 'Vehiculo'
@@ -32,15 +32,20 @@ class Vehiculo (models.Model):
 
 class Bodega (models.Model):
     idBodega = models.AutoField(primary_key=True, verbose_name='ID')
-    name = models.CharField(max_length=50, verbose_name='Nombre de la bodega')
-    area = models.FloatField(verbose_name='Area (m²)')
-    volumen = models.FloatField(verbose_name='Volumen (m³)')
+    nombre = models.CharField(max_length=50, verbose_name='Nombre de la bodega')
+    area = models.FloatField(verbose_name='Area (m²)', blank=True, null=True)
+    volumen = models.FloatField(verbose_name='Volumen (m³)', blank=True, null=True)
     altura = models.FloatField(verbose_name='Altura (m)')
     largo = models.FloatField(verbose_name='Largo (m)')
     ancho = models.FloatField(verbose_name='Ancho (m)')
 
+    def save(self, *args, **kwargs):
+        self.area = round(self.largo * self.ancho, 2)
+        self.volumen = round(self.area * self.altura, 2)
+        super(Bodega, self).save(*args, **kwargs)
+
     def __str__(self):
-        return self.name
+        return self.nombre
 
     class Meta:
         verbose_name = 'Bodega'
@@ -48,7 +53,7 @@ class Bodega (models.Model):
 
 class Objeto (models.Model):
     idObjeto = models.AutoField(primary_key=True, verbose_name='ID')
-    name = models.CharField(max_length=50, verbose_name='Nombre del objeto')
+    nombre = models.CharField(max_length=50, verbose_name='Nombre del objeto')
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     largo = models.FloatField(verbose_name='Largo (m)')
     ancho = models.FloatField(verbose_name='Ancho (m)')
@@ -56,11 +61,11 @@ class Objeto (models.Model):
     volumen = models.FloatField(verbose_name='Volumen (m³)', blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        self.volumen = self.largo * self.ancho * self.alto
+        self.volumen = round(self.largo * self.ancho * self.alto, 2)
         super(Objeto, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return self.nombre
 
     class Meta:
         verbose_name = 'Objeto'
