@@ -17,5 +17,5 @@ Esta aplicación Django proporciona una API para la gestión de categorías, veh
 - **vehiculo/**: CRUD para vehículos.
 - **bodega/**: CRUD para bodegas.
 - **objeto/**: CRUD para objetos.
-- **calculo/**: CRUD para cálculos.
+- **calculo/**: CRUD para cálculos
 
