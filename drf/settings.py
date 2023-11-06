@@ -110,13 +110,15 @@ WSGI_APPLICATION = 'drf.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'backTrabajoGradoDA',
-        'USER': 'postgres',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
+        'NAME': 'd1pfd5tnojj2ai',
+        'USER': 'zibbuyttggixdc',
+        'PASSWORD': 'ee53b9159a12199a5c0df1e12cb120f93d62437b55ee861e38b3865cfbfd3851',
+        'HOST': 'ec2-3-83-61-239.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
+
+
 
 
 # Password validation
