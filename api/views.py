@@ -34,6 +34,8 @@ class CategoriaViewSet(viewsets.ModelViewSet):
         except Categoria.DoesNotExist:
             return Response({"message": "Categoría no encontrada"}, status=status.HTTP_404_NOT_FOUND)
 
+
+
 class VehiculoViewSet(viewsets.ModelViewSet):
     queryset = Vehiculo.objects.all()
     serializer_class = VehiculoSerializer

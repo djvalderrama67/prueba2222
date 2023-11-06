@@ -17,16 +17,11 @@ class BodegaSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ObjetoSerializer(serializers.ModelSerializer):
-    categoria = CategoriaSerializer()
+    categoria = serializers.PrimaryKeyRelatedField(queryset=Categoria.objects.all())
     class Meta:
         model = Objeto
         fields = '__all__'
-    def create(self, validated_data):
-        categoria_data = validated_data.pop('categoria')
-        categoria = Categoria.objects.get(nombre=categoria_data['nombre'])
-        objeto = Objeto.objects.create(categoria=categoria, **validated_data)
-        return objeto
-    
+
 
 class CalculoSerializer(serializers.ModelSerializer):
     class Meta:
