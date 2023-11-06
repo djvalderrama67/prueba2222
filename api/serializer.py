@@ -21,6 +21,12 @@ class ObjetoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Objeto
         fields = '__all__'
+    def create(self, validated_data):
+        categoria_data = validated_data.pop('categoria')
+        categoria = Categoria.objects.get(nombre=categoria_data['nombre'])
+        objeto = Objeto.objects.create(categoria=categoria, **validated_data)
+        return objeto
+    
 
 class CalculoSerializer(serializers.ModelSerializer):
     class Meta:
