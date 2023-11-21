@@ -110,10 +110,10 @@ WSGI_APPLICATION = 'drf.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd1pfd5tnojj2ai',
-        'USER': 'zibbuyttggixdc',
-        'PASSWORD': 'ee53b9159a12199a5c0df1e12cb120f93d62437b55ee861e38b3865cfbfd3851',
-        'HOST': 'ec2-3-83-61-239.compute-1.amazonaws.com',
+        'NAME': 'dd8fmac7af0ql3',
+        'USER': 'ppbaltbivqcsiv',
+        'PASSWORD': '0e9c3c3f141ec2489782955678dd84c07bd979d2fa23e0ae5daea731318267d5',
+        'HOST': 'ec2-107-22-101-0.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
