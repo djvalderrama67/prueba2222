@@ -46,7 +46,7 @@ INSTALLED_APPS = [
 #configuracion de CORS
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # Agrega aquí los orígenes permitidos
+    "https://prueba1111-71a5c0377ece.herokuapp.com",  # Agrega aquí los orígenes permitidos
 ]
 
 CORS_ALLOW_METHODS = [
